@@ -1,4 +1,5 @@
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -12,19 +13,23 @@ public class RMS {
 	static String iSep = "_";
 	static String lSep = "@";
 	
-	public static void main(String[] args) throws SQLException, ClassNotFoundException {
+	
+	
+	public static void main(String[] args) throws SQLException, ClassNotFoundException, UnsupportedEncodingException {
 		
 		String url = "jdbc:mysql://localhost:3306/RMS";
 		String username = "root";
-		String password = "";
+		String password = "root";
 		
-		Connection conn = DriverManager.getConnection(url,username,password); 
+		Connection conn = DriverManager.getConnection(url, username, password); 
         st = conn.createStatement(); 
          
         //AddItem(0,"batu","asd", 100, 10);
-        System.out.println(GetItems());
-        RemoveItem(0);
-        System.out.println(GetItems());
+        //System.out.println(GetItems());
+        //RemoveItem(0);
+       
+        System.out.println(RMSUtils.Password.toHash("admin"));
+        
 	}
 	
 	
@@ -47,26 +52,24 @@ public class RMS {
 			return false;
 		}
 	}
-	
 	public static String GetItems() {
 		ResultSet rs;
+		String str = "";
 		try {
 			rs = st.executeQuery("SELECT * FROM ITEMS");
-			String str = "";
 			while (rs.next()) {
 				String item = rs.getString("item_id") + iSep + rs.getString("item_name") + iSep + rs.getString("description") + iSep + rs.getString("price") + iSep + rs.getString("stock");
-			
 				str += item + lSep;
 			}
 			return str.substring(0, str.length() - lSep.length());
 		} catch (SQLException e) {e.printStackTrace();}
-			  
-		return "";
+		
+		return str;
 	}
 	
 	public static boolean AddTable(int item_id,int t_id ,boolean isFull) {
 		try {
-			st.executeUpdate("INSERT INTO TABLESw Values" + item_id +" ," + t_id + " ," +isFull);
+			st.executeUpdate("INSERT INTO TABLES Values" + item_id +" ," + t_id + " ," +isFull);
 			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
