@@ -1,18 +1,16 @@
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.JDBCType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import com.mysql.cj.jdbc.JdbcConnection;
-import com.mysql.jdbc.Driver;
 
 
 public class RMS {
 	static Statement st;
 	
+	static String iSep = "_";
+	static String lSep = "@";
 	
 	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 		
@@ -23,44 +21,47 @@ public class RMS {
 		Connection conn = DriverManager.getConnection(url,username,password); 
         st = conn.createStatement(); 
          
-        AddItem(0,"batu","asd", 100, 10);
-		
+        //AddItem(0,"batu","asd", 100, 10);
+        System.out.println(GetItems());
+        RemoveItem(0);
+        System.out.println(GetItems());
 	}
 	
 	
-	public static boolean AddItem(int id , String name , String desc , int price , int stock) {
+	public static boolean AddItem(int item_id , String item_name , String description , int price , int stock) {
 		try {
-			st.executeUpdate("INSERT INTO ITEMS Values (" + id + ", '" + name + "', '" + desc + "', " + price + ", " +  stock + ")");
+			st.executeUpdate("INSERT INTO ITEMS Values (" + item_id + ", '" + item_name + "', '" + description + "', " + price + ", " +  stock + ")");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
-			}
-	}
-	
-	public static void RemoveItem(int item_id) {
-		try {
-			st.executeUpdate("DELETE FROM ITEMS WHERE " + item_id);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
-	public static String GetItem() {
-			  ResultSet rs;
-			try {
-				rs = st.executeQuery("SELECT Lname FROM Customers WHERE Snum = 2001");
-				while (rs.next()) {
-					  String lastName = rs.getString("Lname");
-					  System.out.println(lastName + "\n");
-				  }
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	public static boolean RemoveItem(int item_id) {
+		try {
+			st.executeUpdate("DELETE FROM ITEMS WHERE item_id=" + item_id);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static String GetItems() {
+		ResultSet rs;
+		try {
+			rs = st.executeQuery("SELECT * FROM ITEMS");
+			String str = "";
+			while (rs.next()) {
+				String item = rs.getString("item_id") + iSep + rs.getString("item_name") + iSep + rs.getString("description") + iSep + rs.getString("price") + iSep + rs.getString("stock");
+			
+				str += item + lSep;
 			}
+			return str.substring(0, str.length() - lSep.length());
+		} catch (SQLException e) {e.printStackTrace();}
 			  
-			  return " ";
+		return "";
 	}
 	
 	public static boolean AddTable(int item_id,int t_id ,boolean isFull) {
