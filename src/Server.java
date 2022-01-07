@@ -10,7 +10,7 @@ public class Server {
 	}
 
 	public Server() {
-	
+		new DatabaseManager("RMS", "root", "root");
 	}
 
 }
