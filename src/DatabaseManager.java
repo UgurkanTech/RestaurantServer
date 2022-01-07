@@ -9,8 +9,8 @@ import java.sql.Statement;
 public class DatabaseManager {
 	static Statement st;
 	
-	static String iSep = "_";
-	static String lSep = "@";
+	static String iSep = "_"; //Item Seperator
+	static String lSep = "@"; //Line Seperator
 	
 	
 	public DatabaseManager(String database, String user, String pass){
