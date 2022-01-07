@@ -10,11 +10,7 @@ public class Server {
 	}
 
 	public Server() {
-		Thread listener = new Thread(new ListenerThread());
-		Thread sender = new Thread(new SenderThread());
-		
-		listener.start();
-		sender.start();
+	
 	}
 
 }
