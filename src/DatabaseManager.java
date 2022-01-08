@@ -10,7 +10,7 @@ public class DatabaseManager {
 	static Statement st;
 	
 	static String iSep = "_"; //Item Seperator
-	static String lSep = "@"; //Line Seperator
+	static String lSep = "@@@"; //Line Seperator
 	
 	
 	public DatabaseManager(String database, String user, String pass){
@@ -23,8 +23,8 @@ public class DatabaseManager {
 			
 		} catch (SQLException e) {e.printStackTrace();} 
         
-         
-        //AddItem(0,"batu","asd", 100, 10);
+        //RemoveItem(6);
+       // AddItem(6,"coffe","latte", 100, 10);
         //System.out.println(GetItems());
         //RemoveItem(0);
        
