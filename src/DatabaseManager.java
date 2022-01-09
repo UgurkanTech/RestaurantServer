@@ -29,8 +29,20 @@ public class DatabaseManager {
         //RemoveItem(0);
        
         //System.out.println(RMSUtils.Password.toHash("admin"));
+		//AddTable(10, true);
+		//AddEmployee("batusss", 3, "bakanyardýmcý", "pass", 120);
+		//AddEarning(200,"2021-10-07");
+		//AddTableItems(10, 1, 3);
+		//RemoveTableItems(10, 6, 2);
+		//RemoveEarning(200);
+		System.out.println(GetTableItems());
+		//System.out.println(GetItems());
+		//System.out.println(GetTable());
+		//System.out.println(GetEarning());
+		//System.out.println(GetEmployees());
+		RemoveTableItems(4, 2);
+		System.out.println(GetTableItems());
 		
-		System.out.println(GetItems());
 	}
 	
 	//ITEMS
@@ -69,9 +81,9 @@ public class DatabaseManager {
 	}
 	
 	//TABLES
-	public static boolean AddTable(int item_id , String item_name , String description , int price , int stock) {
+	public static boolean AddTable(int t_id , boolean isFull) {
 		try {
-			st.executeUpdate("INSERT INTO TABLES Values (" + item_id + ", '" + item_name + "', '" + description + "', " + price + ", " +  stock + ")");
+			st.executeUpdate("INSERT INTO TABLES Values (" + t_id + ", " +  isFull+ ")");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -79,9 +91,9 @@ public class DatabaseManager {
 		}
 	}
 	
-	public static boolean RemoveTable(int item_id) {
+	public static boolean RemoveTable(int t_id) {
 		try {
-			st.executeUpdate("DELETE FROM TABLES WHERE item_id=" + item_id);
+			st.executeUpdate("DELETE FROM TABLES WHERE t_id=" + t_id);
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -94,7 +106,7 @@ public class DatabaseManager {
 		try {
 			rs = st.executeQuery("SELECT * FROM TABLES");
 			while (rs.next()) {
-				String item = rs.getString("item_id") + iSep + rs.getString("item_name") + iSep + rs.getString("description") + iSep + rs.getString("price") + iSep + rs.getString("stock");
+				String item = rs.getString("t_id") + iSep + rs.getString("isFull") ;
 				str += item + lSep;
 			}
 			return str.substring(0, str.length() - lSep.length());
@@ -103,9 +115,9 @@ public class DatabaseManager {
 		return str;
 	}
 	//TABLEITEMS
-	public static boolean AddTableItems(int item_id , String item_name , String description , int price , int stock) {
+	public static boolean AddTableItems(int t_id , int item_id , int item_count) {
 		try {
-			st.executeUpdate("INSERT INTO TABLES Values (" + item_id + ", '" + item_name + "', '" + description + "', " + price + ", " +  stock + ")");
+			st.executeUpdate("INSERT INTO TABLEITEMS Values (" + t_id + "," + item_id + ", " +item_count+ ")");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -113,9 +125,9 @@ public class DatabaseManager {
 		}
 	}
 	
-	public static boolean RemoveTableItems(int item_id) {
+	public static boolean RemoveTableItems(int t_id , int item_id) {
 		try {
-			st.executeUpdate("DELETE FROM TABLES WHERE item_id=" + item_id);
+			st.executeUpdate("DELETE FROM TABLEITEMS WHERE t_id=" + t_id +" AND item_id=" + item_id );
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -126,9 +138,9 @@ public class DatabaseManager {
 		ResultSet rs;
 		String str = "";
 		try {
-			rs = st.executeQuery("SELECT * FROM TABLES");
+			rs = st.executeQuery("SELECT * FROM TABLEITEMS");
 			while (rs.next()) {
-				String item = rs.getString("item_id") + iSep + rs.getString("item_name") + iSep + rs.getString("description") + iSep + rs.getString("price") + iSep + rs.getString("stock");
+				String item = rs.getString("t_id") + iSep + rs.getString("item_id") + iSep + rs.getString("item_count");
 				str += item + lSep;
 			}
 			return str.substring(0, str.length() - lSep.length());
@@ -139,9 +151,9 @@ public class DatabaseManager {
 	
 	
 	//EMPLOYEES
-	public static boolean AddEmployee(int item_id , String item_name , String description , int price , int stock) {
+	public static boolean AddEmployee(String name ,int e_id, String role , String password , int permissionLevel) {
 		try {
-			st.executeUpdate("INSERT INTO EMPLOYEES Values (" + item_id + ", '" + item_name + "', '" + description + "', " + price + ", " +  stock + ")");
+			st.executeUpdate("INSERT INTO EMPLOYEES Values ('" + name + "', " + e_id + ", '" + role + "', '" + password + "', " +  permissionLevel + ")");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -149,9 +161,9 @@ public class DatabaseManager {
 		}
 	}
 	
-	public static boolean RemoveEmployee(int item_id) {
+	public static boolean RemoveEmployee(int e_id) {
 		try {
-			st.executeUpdate("DELETE FROM EMPLOYEES WHERE item_id=" + item_id);
+			st.executeUpdate("DELETE FROM EMPLOYEES WHERE e_id=" + e_id);
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -164,7 +176,7 @@ public class DatabaseManager {
 		try {
 			rs = st.executeQuery("SELECT * FROM EMPLOYEES");
 			while (rs.next()) {
-				String item = rs.getString("item_id") + iSep + rs.getString("item_name") + iSep + rs.getString("description") + iSep + rs.getString("price") + iSep + rs.getString("stock");
+				String item = rs.getString("name") + iSep + rs.getString("e_id") + iSep + rs.getString("role") + iSep + rs.getString("password") + iSep + rs.getString("permissionLevel");
 				str += item + lSep;
 			}
 			return str.substring(0, str.length() - lSep.length());
@@ -174,9 +186,9 @@ public class DatabaseManager {
 	}
 	
 	//EARNINGS
-	public static boolean AddEarning(int item_id , String item_name , String description , int price , int stock) {
+	public static boolean AddEarning(int price , String dates) {
 		try {
-			st.executeUpdate("INSERT INTO EARNINGS Values (" + item_id + ", '" + item_name + "', '" + description + "', " + price + ", " +  stock + ")");
+			st.executeUpdate("INSERT INTO EARNINGS Values (" + price +", '" + dates + "' )");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -184,9 +196,9 @@ public class DatabaseManager {
 		}
 	}
 	
-	public static boolean RemoveEarning(int item_id) {
+	public static boolean RemoveEarning(int price) {
 		try {
-			st.executeUpdate("DELETE FROM EARNINGS WHERE item_id=" + item_id);
+			st.executeUpdate("DELETE FROM EARNINGS WHERE price=" + price);
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -199,7 +211,7 @@ public class DatabaseManager {
 		try {
 			rs = st.executeQuery("SELECT * FROM EARNINGS");
 			while (rs.next()) {
-				String item = rs.getString("item_id") + iSep + rs.getString("item_name") + iSep + rs.getString("description") + iSep + rs.getString("price") + iSep + rs.getString("stock");
+				String item = rs.getString("price") + iSep + rs.getString("dates");
 				str += item + lSep;
 			}
 			return str.substring(0, str.length() - lSep.length());
