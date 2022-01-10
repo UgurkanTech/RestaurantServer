@@ -10,8 +10,10 @@ public class DatabaseManager {
 	static Statement st;
 	
 	static String iSep = "_"; //Item Seperator
-	static String lSep = "@@@"; //Line Seperator
+	static String lSep = "#"; //Line Seperator
+	static String cSep = "@"; //Command Seperator
 	
+	static boolean ready = false;
 	
 	public DatabaseManager(String database, String user, String pass){
 		String url = "jdbc:mysql://localhost:3306/" + database;
@@ -20,33 +22,19 @@ public class DatabaseManager {
 			
 			Connection conn = DriverManager.getConnection(url, user, pass);
 			st = conn.createStatement(); 
+			System.out.println("Database Connection Established!");
+			ready = true;
 			
-		} catch (SQLException e) {e.printStackTrace();} 
+		} catch (SQLException e) {
+			System.err.println("Database Connection Failed! Try restarting MySQL Server!");
+			//e.printStackTrace();
+		} 
         
-        //RemoveItem(6);
-       // AddItem(6,"coffe","latte", 100, 10);
-        //System.out.println(GetItems());
-        //RemoveItem(0);
-       
-        //System.out.println(RMSUtils.Password.toHash("admin"));
-		//AddTable(10, true);
-		//AddEmployee("batusss", 3, "bakanyardýmcý", "pass", 120);
-		//AddEarning(200,"2021-10-07");
-		//AddTableItems(10, 1, 3);
-		//RemoveTableItems(10, 6, 2);
-		//RemoveEarning(200);
-		System.out.println(GetTableItems());
 		//System.out.println(GetItems());
-		//System.out.println(GetTable());
-		//System.out.println(GetEarning());
-		//System.out.println(GetEmployees());
-		RemoveTableItems(4, 2);
-		System.out.println(GetTableItems());
-		
 	}
 	
 	//ITEMS
-	public static boolean AddItem(int item_id , String item_name , String description , int price , int stock) {
+	public static boolean AddItem(String item_id , String item_name , String description , String price , String stock) {
 		try {
 			st.executeUpdate("INSERT INTO ITEMS Values (" + item_id + ", '" + item_name + "', '" + description + "', " + price + ", " +  stock + ")");
 			return true;
@@ -56,7 +44,7 @@ public class DatabaseManager {
 		}
 	}
 	
-	public static boolean RemoveItem(int item_id) {
+	public static boolean RemoveItem(String item_id) {
 		try {
 			st.executeUpdate("DELETE FROM ITEMS WHERE item_id=" + item_id);
 			return true;
@@ -74,14 +62,14 @@ public class DatabaseManager {
 				String item = rs.getString("item_id") + iSep + rs.getString("item_name") + iSep + rs.getString("description") + iSep + rs.getString("price") + iSep + rs.getString("stock");
 				str += item + lSep;
 			}
-			return str.substring(0, str.length() - lSep.length());
+			return "items" + cSep + str.substring(0, str.length() - lSep.length());
 		} catch (SQLException e) {e.printStackTrace();}
 		
-		return str;
+		return "items" + cSep + str;
 	}
 	
 	//TABLES
-	public static boolean AddTable(int t_id , boolean isFull) {
+	public static boolean AddTable(String t_id , String isFull) {
 		try {
 			st.executeUpdate("INSERT INTO TABLES Values (" + t_id + ", " +  isFull+ ")");
 			return true;
@@ -91,7 +79,7 @@ public class DatabaseManager {
 		}
 	}
 	
-	public static boolean RemoveTable(int t_id) {
+	public static boolean RemoveTable(String t_id) {
 		try {
 			st.executeUpdate("DELETE FROM TABLES WHERE t_id=" + t_id);
 			return true;
@@ -100,7 +88,7 @@ public class DatabaseManager {
 			return false;
 		}
 	}
-	public static String GetTable() {
+	public static String GetTables() {
 		ResultSet rs;
 		String str = "";
 		try {
@@ -109,13 +97,13 @@ public class DatabaseManager {
 				String item = rs.getString("t_id") + iSep + rs.getString("isFull") ;
 				str += item + lSep;
 			}
-			return str.substring(0, str.length() - lSep.length());
+			return "tables" + cSep + str.substring(0, str.length() - lSep.length());
 		} catch (SQLException e) {e.printStackTrace();}
 		
-		return str;
+		return "tables" + cSep + str;
 	}
 	//TABLEITEMS
-	public static boolean AddTableItems(int t_id , int item_id , int item_count) {
+	public static boolean AddTableItem(String t_id , String item_id , String item_count) {
 		try {
 			st.executeUpdate("INSERT INTO TABLEITEMS Values (" + t_id + "," + item_id + ", " +item_count+ ")");
 			return true;
@@ -125,7 +113,7 @@ public class DatabaseManager {
 		}
 	}
 	
-	public static boolean RemoveTableItems(int t_id , int item_id) {
+	public static boolean RemoveTableItem(String t_id , String item_id) {
 		try {
 			st.executeUpdate("DELETE FROM TABLEITEMS WHERE t_id=" + t_id +" AND item_id=" + item_id );
 			return true;
@@ -143,15 +131,15 @@ public class DatabaseManager {
 				String item = rs.getString("t_id") + iSep + rs.getString("item_id") + iSep + rs.getString("item_count");
 				str += item + lSep;
 			}
-			return str.substring(0, str.length() - lSep.length());
+			return "tableitems" + cSep + str.substring(0, str.length() - lSep.length());
 		} catch (SQLException e) {e.printStackTrace();}
 		
-		return str;
+		return "tableitems" + cSep + str;
 	}
 	
 	
 	//EMPLOYEES
-	public static boolean AddEmployee(String name ,int e_id, String role , String password , int permissionLevel) {
+	public static boolean AddEmployee(String name ,String e_id, String role , String password , String permissionLevel) {
 		try {
 			st.executeUpdate("INSERT INTO EMPLOYEES Values ('" + name + "', " + e_id + ", '" + role + "', '" + password + "', " +  permissionLevel + ")");
 			return true;
@@ -161,7 +149,7 @@ public class DatabaseManager {
 		}
 	}
 	
-	public static boolean RemoveEmployee(int e_id) {
+	public static boolean RemoveEmployee(String e_id) {
 		try {
 			st.executeUpdate("DELETE FROM EMPLOYEES WHERE e_id=" + e_id);
 			return true;
@@ -179,14 +167,14 @@ public class DatabaseManager {
 				String item = rs.getString("name") + iSep + rs.getString("e_id") + iSep + rs.getString("role") + iSep + rs.getString("password") + iSep + rs.getString("permissionLevel");
 				str += item + lSep;
 			}
-			return str.substring(0, str.length() - lSep.length());
+			return "employees" + cSep + str.substring(0, str.length() - lSep.length());
 		} catch (SQLException e) {e.printStackTrace();}
 		
-		return str;
+		return "employees" + cSep + str;
 	}
 	
 	//EARNINGS
-	public static boolean AddEarning(int price , String dates) {
+	public static boolean AddEarning(String price , String dates) {
 		try {
 			st.executeUpdate("INSERT INTO EARNINGS Values (" + price +", '" + dates + "' )");
 			return true;
@@ -196,7 +184,7 @@ public class DatabaseManager {
 		}
 	}
 	
-	public static boolean RemoveEarning(int price) {
+	public static boolean RemoveEarning(String price) {
 		try {
 			st.executeUpdate("DELETE FROM EARNINGS WHERE price=" + price);
 			return true;
@@ -205,7 +193,7 @@ public class DatabaseManager {
 			return false;
 		}
 	}
-	public static String GetEarning() {
+	public static String GetEarnings() {
 		ResultSet rs;
 		String str = "";
 		try {
@@ -214,14 +202,10 @@ public class DatabaseManager {
 				String item = rs.getString("price") + iSep + rs.getString("dates");
 				str += item + lSep;
 			}
-			return str.substring(0, str.length() - lSep.length());
+			return "earnings" + cSep + str.substring(0, str.length() - lSep.length());
 		} catch (SQLException e) {e.printStackTrace();}
 		
-		return str;
+		return "earnings" + cSep + str;
 	}
-	
-	
-	
-	
 	
 }
