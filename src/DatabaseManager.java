@@ -71,7 +71,7 @@ public class DatabaseManager {
 	//TABLES
 	public static boolean AddTable(String t_id , String isFull) {
 		try {
-			st.executeUpdate("INSERT INTO TABLES Values (" + t_id + ", " +  isFull+ ")");
+			st.executeUpdate("INSERT INTO TABLES (t_id, isFull) Values (" + t_id + ", " +  isFull+ ") ON DUPLICATE KEY UPDATE t_id=" + t_id + ", isFull=" + isFull);
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

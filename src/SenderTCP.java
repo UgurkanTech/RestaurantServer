@@ -52,7 +52,7 @@ public class SenderTCP extends Thread{
 					if (DEBUG) e1.printStackTrace(); else System.err.println("Data writing failed! - Client: " + clientID);
 					break;
 				}
-				try {Thread.sleep(100);} catch (Exception e) {e.printStackTrace();}
+				try {Thread.sleep(20);} catch (Exception e) {e.printStackTrace();}
 			}
 		}
 	}
