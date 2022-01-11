@@ -1,3 +1,4 @@
+import javax.swing.SwingUtilities;
 
 public class Server {
 
@@ -7,10 +8,19 @@ public class Server {
 	}
 
 	public Server() {
-		new GUI();
-		new DatabaseManager("RMS", "root", "");
-		if(DatabaseManager.ready)
-			new ServerTCP();
+		GUI gui = new GUI();
+
+		
+		SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+        		new DatabaseManager("RMS", "root", "");
+        		if(DatabaseManager.ready)
+        			new ServerTCP();
+            }
+        });
+		
+		gui.revalidate();
+		gui.repaint();
 	}
 	
 }

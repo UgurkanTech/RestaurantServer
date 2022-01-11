@@ -50,7 +50,7 @@ public class ReceiverTCP extends Thread{
 					CommandExecutioner.execute(text);
 					
 				} catch (IOException e1) {
-					if (DEBUG) e1.printStackTrace(); else System.err.println("Data reading failed! - Client: " + clientID);
+					if (DEBUG) e1.printStackTrace(); else System.err.println("Connection Lost! - Client: " + clientID);
 					break;
 				}
 				//try {Thread.sleep(1000);} catch (Exception e) {e.printStackTrace();}
