@@ -8,7 +8,7 @@ public class Server {
 
 	public Server() {
 		new GUI();
-		new DatabaseManager("RMS", "root", "root");
+		new DatabaseManager("RMS", "root", "");
 		if(DatabaseManager.ready)
 			new ServerTCP();
 	}

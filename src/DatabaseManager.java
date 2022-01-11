@@ -62,7 +62,9 @@ public class DatabaseManager {
 				String item = rs.getString("item_id") + iSep + rs.getString("item_name") + iSep + rs.getString("description") + iSep + rs.getString("price") + iSep + rs.getString("stock");
 				str += item + lSep;
 			}
-			return "items" + cSep + str.substring(0, str.length() - lSep.length());
+			if(str.length() > 1)
+				return "items" + cSep + str.substring(0, str.length() - lSep.length());
+			else return "items" + cSep;
 		} catch (SQLException e) {e.printStackTrace();}
 		
 		return "items" + cSep + str;
@@ -97,7 +99,9 @@ public class DatabaseManager {
 				String item = rs.getString("t_id") + iSep + rs.getString("isFull") ;
 				str += item + lSep;
 			}
-			return "tables" + cSep + str.substring(0, str.length() - lSep.length());
+			if(str.length() > 1)
+				return "tables" + cSep + str.substring(0, str.length() - lSep.length());
+			else return "tables" + cSep;
 		} catch (SQLException e) {e.printStackTrace();}
 		
 		return "tables" + cSep + str;
@@ -122,6 +126,15 @@ public class DatabaseManager {
 			return false;
 		}
 	}
+	public static boolean ClearTableItem(String t_id) {
+		try {
+			st.executeUpdate("DELETE FROM TABLEITEMS WHERE t_id=" + t_id);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	public static String GetTableItems() {
 		ResultSet rs;
 		String str = "";
@@ -131,7 +144,9 @@ public class DatabaseManager {
 				String item = rs.getString("t_id") + iSep + rs.getString("item_id") + iSep + rs.getString("item_count");
 				str += item + lSep;
 			}
-			return "tableitems" + cSep + str.substring(0, str.length() - lSep.length());
+			if(str.length() > 1)
+				return "tableitems" + cSep + str.substring(0, str.length() - lSep.length());
+			else return "tableitems" + cSep;
 		} catch (SQLException e) {e.printStackTrace();}
 		
 		return "tableitems" + cSep + str;
@@ -183,7 +198,15 @@ public class DatabaseManager {
 			return false;
 		}
 	}
-	
+	public static boolean ClearEarning() {
+		try {
+			st.executeUpdate("DELETE FROM EARNINGS");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	public static boolean RemoveEarning(String price) {
 		try {
 			st.executeUpdate("DELETE FROM EARNINGS WHERE price=" + price);
@@ -202,7 +225,9 @@ public class DatabaseManager {
 				String item = rs.getString("price") + iSep + rs.getString("dates");
 				str += item + lSep;
 			}
-			return "earnings" + cSep + str.substring(0, str.length() - lSep.length());
+			if(str.length() > 1)
+				return "earnings" + cSep + str.substring(0, str.length() - lSep.length());
+			else return "earnings" + cSep;
 		} catch (SQLException e) {e.printStackTrace();}
 		
 		return "earnings" + cSep + str;
