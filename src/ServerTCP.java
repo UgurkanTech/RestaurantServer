@@ -19,7 +19,7 @@ public class ServerTCP extends Thread{
 	
 	//communication settings
 	public boolean compressData = true;
-	public boolean encryptData = false;
+	public boolean encryptData = true;
 	private final boolean DEBUG = false;
 	
 	private ServerSocket serversocket;
@@ -31,14 +31,14 @@ public class ServerTCP extends Thread{
 
 	
 	private int getNewClientID() {
-		for (int i = 0; i < 256; i++) {
+		for (int i = 0; i < 250; i++) {
 			for (int j = 0; j < clients.size(); j++) {
 				if(clients.get(j).getClientID() != i) 
 					return i;
 			}
 			
 		}
-		return -1;
+		return 0;
 	}
 	
 	

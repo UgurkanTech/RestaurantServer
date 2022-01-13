@@ -40,6 +40,8 @@ public class ReceiverTCP extends Thread{
 					byte[] buffer = new byte[bufferSize];
 					dataInput.read(buffer);
 					
+					
+					
 					if (encryptData) {buffer = RMSUtils.AES.decrypt(buffer, encryptKey + "");}
 					
 					if (compressData) {buffer = RMSUtils.Compressor.Uncompress(buffer);}
