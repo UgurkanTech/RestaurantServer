@@ -6,6 +6,8 @@ import java.util.ArrayList;
 /**
  * A TCP Server
  * 
+ * All rights reserved.
+ * 
  * @author Uğurkan Hoşgör
  *
  */

@@ -1,13 +1,11 @@
 import java.util.LinkedList;
 import java.util.Queue;
 
-import javax.xml.stream.util.EventReaderDelegate;
-
 public class CommandExecutioner {
 
 	public static Queue<String> sendQueue = new LinkedList<String>();
 
-	
+	//Executes a command on the database
 	public static void execute(String command) {
 		
 		

@@ -56,8 +56,11 @@ public class GUI extends JFrame{
 	    });
 	  }
 	  
-
+	/*
+	 *  Set new Console
+	 */
 	  private void redirectSystemStreams() {
+		//Color for errors
 	    OutputStream out = new OutputStream() {
 	      @Override
 	      public void write(int b) throws IOException {
@@ -74,6 +77,7 @@ public class GUI extends JFrame{
 	        write(b, 0, b.length);
 	      }
 	    };
+	    //Red for errors
 	    OutputStream oute = new OutputStream() {
 		      @Override
 		      public void write(int b) throws IOException {
